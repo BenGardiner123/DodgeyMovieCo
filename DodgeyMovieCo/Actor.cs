@@ -18,10 +18,11 @@ namespace DodgeyMovieCo
 
         }
 
-        public void setFullName()
+        public string setFullName(string givenName, string surname)
         {
             //sets the fullname of the actor which is the givenname and surname with a space in between
-
+            string output = "";
+            return output;
         }
 
     }
