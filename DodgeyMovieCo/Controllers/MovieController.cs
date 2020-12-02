@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +14,38 @@ namespace DodgeyMovieCo.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
+
+        IConfiguration configuration;
+        // have to add this using nuget sqldataclient
+        SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
+
+        string connectionString;
+
+        public MovieController(IConfiguration iConfig)
+        {
+            this.configuration = iConfig;
+
+            this.stringBuilder.DataSource = this.configuration.GetSection("DBConnectionStrings").GetSection("Url").Value;
+            this.stringBuilder.InitialCatalog = this.configuration.GetSection("DBConnectionStrings").GetSection("Database").Value;
+            this.stringBuilder.UserID = this.configuration.GetSection("DBConnectionStrings").GetSection("User").Value;
+            this.stringBuilder.Password = this.configuration.GetSection("DBConnectionStrings").GetSection("Password").Value;
+            this.connectionString = this.stringBuilder.ConnectionString;
+        }
+
+
+     // GET: api/<MovieController>
+        [HttpGet]
+        public ActionResult<IEnumerable<Movie>> Get()
+        {
+
+            //Create the movie list
+            //ReadOnlyMemory everything into it
+            //here    
+            //return movie
+        }
+
+
+
         // GET: api/<MovieController>
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get()
