@@ -68,12 +68,59 @@ namespace DodgeyMovieCo
 
 
 
-        public int GetAge(int MovieNum)
+        public int GetAge(string connectionString, string MovieTitle)
         {
-            return 2020 - this.ReleaseYear;
-            //returns how old the movie is from the current year as an int
-        }
+            ActorRessponseModel movieResponse = new ActorRessponseModel();
+            Movie m1 = new Movie();
 
+            string MovieAge = "SELECT M.MOVIENO, M.TITLE, M.RELYEAR, M.RUNTIME " +
+                                 "FROM MOVIE M " +
+                                 "INNER JOIN CASTING C " +
+                                 "ON C.MOVIENO = M.MOVIENO " +
+                                 $"WHERE M.TITLE = '{MovieTitle}'";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+            SqlCommand getMovieAgeCmd = new SqlCommand(MovieAge, connecting);
+
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getMovieAgeCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movieResponse.Movies.Add(
+                                             new Movie()
+                                             {
+                                                 MovieNum = Convert.ToInt32(reader[0]),
+                                                 Title = reader[1].ToString(),
+                                                 ReleaseYear = Convert.ToInt32(reader[2]),
+                                                 RunTime = (Convert.ToInt32(reader[3]))
+                                             });
+
+                    }
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            var relyearOutput = 0;
+            relyearOutput = movieResponse.Movies[2].ReleaseYear;
+            relyearOutput = 2020 - relyearOutput;
+
+            return relyearOutput;
+
+
+        }
+            
 
     }
 }

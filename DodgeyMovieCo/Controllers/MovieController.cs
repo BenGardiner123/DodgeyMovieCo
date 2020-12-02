@@ -35,12 +35,42 @@ namespace DodgeyMovieCo.Controllers
             this.connectionString = this.stringBuilder.ConnectionString;
         }
 
+
         // GET: api/<MovieController>/NumActors
+
+        [Route("NumActors/{movieNum}")]
+        [HttpGet]
+        public List<NumActorsResponseModel> ActorTotal(int movieNum)
+        {
+            Movie m2 = new Movie();
+            return m2.NumActors(connectionString, movieNum);
+        }
+
+
+
+        // GET: api/<MovieController>/MovieAge
+        [Route("MovieAge/{movieTitle}")]
+        [HttpGet]
+        public int GetMovieAge(string movieTitle)
+        {
+            Movie m2 = new Movie();
+            return m2.GetAge(connectionString, movieTitle);
+
+        }
+
+
+
+
+
+
+
+        //ReadTask1
+        // GET: api/<MovieController>/AllMovies
         [Route("Test")]
         [HttpGet]
-        public List<Movie> fuckingTestThisCunt()
+        public List<Movie> GetAllMovies()
         {
-            MovieDatabseServerResponse movie1 = new MovieDatabseServerResponse();
+            ActorRessponseModel movie1 = new ActorRessponseModel();
             Movie m1 = new Movie();
 
             string query1 = "select * from Movie";
@@ -90,27 +120,10 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-        // GET: api/<MovieController>/NumActors
-        [Route("NumActors/{movieNum}")]
-        public List<NumActorsResponseModel> actorTotal(int movieNum)
-        {
-            Movie m2 = new Movie();
-            return m2.NumActors(connectionString, movieNum);
-        }
+      
 
-
-
-      /*  // GET: api/<MovieController>
-        [HttpGet]
-        public ActionResult<IEnumerable<Movie>> Get()
-        {
-
-            //Create the movie list
-            //ReadOnlyMemory everything into it
-            //here    
-            //return movie
-        }
-
+        
+        /*
         // GET api/<MovieController>/The
         [HttpGet("{searchWord}")]
         public List<Movie> Get(string searchWord)

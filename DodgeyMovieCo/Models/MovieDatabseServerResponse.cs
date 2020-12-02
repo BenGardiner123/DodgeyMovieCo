@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DodgeyMovieCo
 {
-    public class MovieDatabseServerResponse
+    public class ActorRessponseModel
     {
         public List<Movie> Movies = new List<Movie>();
     }
