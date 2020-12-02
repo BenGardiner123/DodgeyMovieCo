@@ -17,6 +17,7 @@ namespace DodgeyMovieCo.Controllers
     
     public class MovieController : ControllerBase
     {
+        public static List<Movie> staticResultsHolder = new List<Movie>();
 
         IConfiguration configuration;
         // have to add this using nuget sqldataclient
@@ -57,11 +58,6 @@ namespace DodgeyMovieCo.Controllers
             return m2.GetAge(connectionString, movieTitle);
 
         }
-
-
-
-
-
 
 
         //ReadTask1
@@ -112,7 +108,8 @@ namespace DodgeyMovieCo.Controllers
                 throw new ApplicationException($"Some sql error happened + {ex}");
             }
 
-
+            staticResultsHolder = movie1.Movies.ToList();
+            
             return movie1.Movies;
 
 
@@ -184,25 +181,90 @@ namespace DodgeyMovieCo.Controllers
 
 
         }
-    }
+    
 
         // GET api/<MovieController>/Luke Wilson
-        [HttpGet("{actors' name}")]
-        public List<Movie> Get(string searchWord)
-        {
-            //Access the database and display all the titles for 
-            //all movies that Luke Wilson has been cast in
-            return movieList;
+        [Route("Movie/LukeWilson")]
+        [HttpGet]
+        public List<string> getLukeWilsonsMovieTitles() { 
+
+            //access the database and display the titles for all the movies 
+            //that Luke Wilson starred in
+            MovieDataBseResponseModel movieResposne = new MovieDataBseResponseModel();
+            //this is wehre the titles will go after they're pulled out o fthe db'
+            List<string> titles = new List<string>();
+
+            string query1 =    "SELECT M.MOVIENO, M.TITLE, M.RELYEAR, M.RUNTIME " +
+                               "FROM MOVIE M " +
+                               "INNER JOIN CASTING C " +
+                               "ON C.MOVIENO = M.MOVIENO " +
+                               "INNER JOIN ACTOR A " +
+                               "ON C.ACTORNO = A.ACTORNO " +
+                               "WHERE c.actorno = 36422 ";
+            
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand getMovies = new SqlCommand(query1, connecting);
+
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getMovies.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movieResposne.Movies.Add(
+                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                            new Movie()
+                            {
+                                MovieNum = Convert.ToInt32(reader[0]),
+                                Title = reader[1].ToString(),
+                                ReleaseYear = Convert.ToInt32(reader[2]),
+                                RunTime = (Convert.ToInt32(reader[3]))
+                            });
+
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            //using LINQ to filter all the strings out of the list -which wil be only the titles
+            var result = movieResposne.Movies.OfType<string>();
+
+
+            // Loop through the collection and add all those titles to a list and then return them
+            foreach (var title in result)
+            {
+                titles.Add(title);
+            }
+
+            return titles;
+
+
+
         }
 
-        // GET api/<MovieController>/Luke Wilson
+
+
+       /* // GET api/<MovieController>/Luke Wilson
         [HttpGet("RunningTime")]
         public List<Movie> Get(string searchWord)
         {
             //Using the list Movies created in step one, 
             //display the total running time of all movies
             return movieList;
-        }
+        }*/
 
       /*  // PUT api/<MovieController>/Ghostbusters
         [HttpPut("{movie title}")]
