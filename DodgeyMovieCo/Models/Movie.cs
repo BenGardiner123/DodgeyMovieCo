@@ -70,7 +70,7 @@ namespace DodgeyMovieCo
 
         public int GetAge(string connectionString, string MovieTitle)
         {
-            ActorRessponseModel movieResponse = new ActorRessponseModel();
+            MovieDataBseResponseModel movieResponse = new MovieDataBseResponseModel();
             Movie m1 = new Movie();
 
             string MovieAge = "SELECT M.MOVIENO, M.TITLE, M.RELYEAR, M.RUNTIME " +

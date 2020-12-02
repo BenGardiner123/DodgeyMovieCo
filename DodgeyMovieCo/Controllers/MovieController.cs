@@ -66,12 +66,13 @@ namespace DodgeyMovieCo.Controllers
 
         //ReadTask1
         // GET: api/<MovieController>/AllMovies
-        [Route("Test")]
+        [Route("AllMovies")]
         [HttpGet]
         public List<Movie> GetAllMovies()
         {
-            ActorRessponseModel movie1 = new ActorRessponseModel();
+            MovieDataBseResponseModel movie1 = new MovieDataBseResponseModel();
             Movie m1 = new Movie();
+            
 
             string query1 = "select * from Movie";
 
@@ -117,21 +118,73 @@ namespace DodgeyMovieCo.Controllers
 
 
         }
-
-
-
-      
-
         
-        /*
         // GET api/<MovieController>/The
-        [HttpGet("{searchWord}")]
-        public List<Movie> Get(string searchWord)
+        [Route("TitleContainsThe")]
+        [HttpGet]
+        public List<string> TitlesThatBeginWith()
         {
             //access the database and display the titles for all the movies 
             //with title that begin with the word “The” (case insensitive)
-                return movieList;
+            MovieDataBseResponseModel movieResposne = new MovieDataBseResponseModel();
+            //this is wehre the titles will go after they're pulled out o fthe db'
+            List<string> titles = new List<string>();
+
+            string query1 = "select * from Movie " +
+                            $"where LOWER m.title like LOWER ('%The%')";
+                           
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand getMovies = new SqlCommand(query1, connecting);
+
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getMovies.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movieResposne.Movies.Add(
+                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                            new Movie()
+                            {
+                                MovieNum = Convert.ToInt32(reader[0]),
+                                Title = reader[1].ToString(),
+                                ReleaseYear = Convert.ToInt32(reader[2]),
+                                RunTime = (Convert.ToInt32(reader[3]))
+                            });
+
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            //using LINQ to filter all the strings out of the list -which wil be only the titles
+            var result = movieResposne.Movies.OfType<string>();
+
+
+            // Loop through the collection and add all those titles to a list and then return them
+            foreach (var title in result)
+            {
+                titles.Add(title);
+            }
+
+            return titles;
+
+
+
         }
+    }
 
         // GET api/<MovieController>/Luke Wilson
         [HttpGet("{actors' name}")]
@@ -149,7 +202,7 @@ namespace DodgeyMovieCo.Controllers
             //Using the list Movies created in step one, 
             //display the total running time of all movies
             return movieList;
-        }*/
+        }
 
       /*  // PUT api/<MovieController>/Ghostbusters
         [HttpPut("{movie title}")]
