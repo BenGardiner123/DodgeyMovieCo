@@ -22,7 +22,7 @@ namespace DodgeyMovieCo.Controllers
         // have to add this using nuget sqldataclient
         SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
 
-        string connectionString;
+        public string connectionString = "";
 
         public MovieController(IConfiguration iConfig)
         {
@@ -41,7 +41,7 @@ namespace DodgeyMovieCo.Controllers
         public int actorTotal(int movieNum)
         {
             Movie m2 = new Movie();
-            return 2020 - m2.NumActors(movieNum);
+            return 2020 - m2.NumActors(this.connectionString, movieNum);
         }
 
 

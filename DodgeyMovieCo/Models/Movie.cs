@@ -11,7 +11,6 @@ namespace DodgeyMovieCo
     
     public class Movie
     {
-       
         public int MovieNum { get; set; }
         public string Title { get; set; }
         public int ReleaseYear { get; set; }
@@ -22,20 +21,18 @@ namespace DodgeyMovieCo
 
         }
 
-        public int NumActors(int MovieNum) {
+        public int NumActors(string connectionString, int MovieNum) {
             NumActorsResponseEnvelope numAct = new NumActorsResponseEnvelope();
             Movie m1 = new Movie();
 
-            string ActorsCount = "SELECT M.MOVIENO, COUNT(C.ACTORNO) as Total" +
+            string ActorsCount = "select COUNT(C.ACTORNO) as Total" +
                                  "FROM MOVIE M" +
                                  "INNER JOIN CASTING C " +
                                  "ON C.MOVIENO = M.MOVIENO" +
-                                 "INNER JOIN ACTOR A " +
-                                 "ON C.ACTORNO = A.ACTORNO" +
                                  "WHERE M.MOVIENO = @MOVIENUM";
-
+                                
             // create connection and command
-            SqlConnection connecting = new SqlConnection();
+            SqlConnection connecting = new SqlConnection(connectionString);
 
             SqlCommand getActorsCmd = new SqlCommand(ActorsCount, connecting);
             getActorsCmd.Parameters.Add("@MOVIENUM", SqlDbType.VarChar, 100).Value = MovieNum;
