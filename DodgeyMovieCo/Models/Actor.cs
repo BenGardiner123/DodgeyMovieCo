@@ -8,7 +8,7 @@ namespace DodgeyMovieCo
     public class Actor
     {
        
-        public int ActorNum { get; set; }
+        public int ActorNo { get; set; }
         public string FullName { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }

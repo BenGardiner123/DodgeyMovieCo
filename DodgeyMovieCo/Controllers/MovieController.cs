@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DodgeyMovieCo.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -47,13 +48,9 @@ namespace DodgeyMovieCo.Controllers
 
        // GET: api/<MovieController>
         [HttpGet]
-        public ActionResult<IEnumerable<Movie>> Get()
+        public  GetNumActors()
         {
-
-            //Create the movie list
-            //ReadOnlyMemory everything into it
-            //here    
-            //return movie
+           
 
         }
 
