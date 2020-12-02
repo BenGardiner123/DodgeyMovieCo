@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,13 +40,13 @@ namespace DodgeyMovieCo.Controllers
         [Route("NumActors")]
         public int actorTotal(int movieNum)
         {
-            Movie m1 = new Movie();
-            return m1.NumActors(movieNum);
+            Movie m2 = new Movie();
+            return 2020 - m2.NumActors(movieNum);
         }
 
 
 
-        // GET: api/<MovieController>
+      /*  // GET: api/<MovieController>
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get()
         {
@@ -82,7 +83,6 @@ namespace DodgeyMovieCo.Controllers
             //display the total running time of all movies
             return movieList;
         }*/
-
 
       /*  // PUT api/<MovieController>/Ghostbusters
         [HttpPut("{movie title}")]

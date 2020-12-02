@@ -7,7 +7,7 @@ namespace DodgeyMovieCo.Models
 {
     public class NumActorsResponseModel
     {
-        public int MovieNo { get; set; }
         public int NumActors { get; set; }
+        
     }
 }
