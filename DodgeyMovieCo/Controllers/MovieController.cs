@@ -22,7 +22,7 @@ namespace DodgeyMovieCo.Controllers
         // have to add this using nuget sqldataclient
         SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
 
-        public string connectionString = "";
+        public string connectionString;
 
         public MovieController(IConfiguration iConfig)
         {
@@ -35,13 +35,67 @@ namespace DodgeyMovieCo.Controllers
             this.connectionString = this.stringBuilder.ConnectionString;
         }
 
+        // GET: api/<MovieController>/NumActors
+        [Route("Test")]
+        [HttpGet]
+        public List<Movie> fuckingTestThisCunt()
+        {
+            MovieDatabseServerResponse movie1 = new MovieDatabseServerResponse();
+            Movie m1 = new Movie();
+
+            string query1 = "select * from Movie";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand getActorsCmd = new SqlCommand(query1, connecting);
+           
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getActorsCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movie1.Movies.Add(
+                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                            new Movie()
+                            {
+                                MovieNum = Convert.ToInt32(reader[0]),
+                                Title = reader[1].ToString(),
+                                ReleaseYear = Convert.ToInt32(reader[2]),
+                                RunTime = (Convert.ToInt32(reader[3]))
+                            });
+                    
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+
+            return movie1.Movies;
+
+
+
+        }
+
+
 
         // GET: api/<MovieController>/NumActors
-        [Route("NumActors")]
-        public int actorTotal(int movieNum)
+        [Route("NumActors/{movieNum}")]
+        public List<NumActorsResponseModel> actorTotal(int movieNum)
         {
             Movie m2 = new Movie();
-            return 2020 - m2.NumActors(this.connectionString, movieNum);
+            return m2.NumActors(connectionString, movieNum);
         }
 
 

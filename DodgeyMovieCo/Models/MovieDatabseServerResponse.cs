@@ -7,6 +7,6 @@ namespace DodgeyMovieCo
 {
     public class MovieDatabseServerResponse
     {
-        List<Movie> Movies = new List<Movie>();
+        public List<Movie> Movies = new List<Movie>();
     }
 }

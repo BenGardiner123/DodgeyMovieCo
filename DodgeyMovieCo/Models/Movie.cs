@@ -21,23 +21,20 @@ namespace DodgeyMovieCo
 
         }
 
-        public int NumActors(string connectionString, int MovieNum) {
-            NumActorsResponseEnvelope numAct = new NumActorsResponseEnvelope();
+        public List<NumActorsResponseModel> NumActors(string connectionString, int MovieNum) {
+            NumActorsResponseEnvelope r1 = new NumActorsResponseEnvelope();
             Movie m1 = new Movie();
 
-            string ActorsCount = "select COUNT(C.ACTORNO) as Total" +
-                                 "FROM MOVIE M" +
+            string ActorsCount = "select COUNT(C.ACTORNO) " +
+                                 "FROM MOVIE M " +
                                  "INNER JOIN CASTING C " +
-                                 "ON C.MOVIENO = M.MOVIENO" +
-                                 "WHERE M.MOVIENO = @MOVIENUM";
+                                 "ON C.MOVIENO = M.MOVIENO " +
+                                 $"WHERE M.MOVIENO = '{MovieNum}'";
                                 
             // create connection and command
             SqlConnection connecting = new SqlConnection(connectionString);
-
             SqlCommand getActorsCmd = new SqlCommand(ActorsCount, connecting);
-            getActorsCmd.Parameters.Add("@MOVIENUM", SqlDbType.VarChar, 100).Value = MovieNum;
-            List<int> ActorCount = new List<int>();
-
+            
             try
             {
                 connecting.Open();
@@ -47,8 +44,11 @@ namespace DodgeyMovieCo
                     while (reader.Read())
                     {
                         // ORM - Object Relation Mapping
-                        ActorCount.Add(Convert.ToInt32(reader["Total"]));
-
+                        r1.numberAct.Add(
+                            new NumActorsResponseModel() 
+                            { 
+                                NumActors = (int)reader[0]
+                            });
                     }
                     reader.Close();
                 }
@@ -60,8 +60,8 @@ namespace DodgeyMovieCo
                 throw new ApplicationException($"Some sql error happened + {ex}");
             }
 
-         
-            return ActorCount.First();
+
+            return r1.numberAct;
 
 
         }
@@ -70,10 +70,8 @@ namespace DodgeyMovieCo
 
         public int GetAge(int MovieNum)
         {
+            return 2020 - this.ReleaseYear;
             //returns how old the movie is from the current year as an int
-            // so now i need to return the eladboard view into something then return that to angualr
-            // not sure if i combine the two here or just use the SQLdataclient. 
-            return 2020 - MovieNum;
         }
 
 
