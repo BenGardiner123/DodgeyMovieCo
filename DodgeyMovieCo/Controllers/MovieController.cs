@@ -34,29 +34,18 @@ namespace DodgeyMovieCo.Controllers
             this.connectionString = this.stringBuilder.ConnectionString;
         }
 
-       /* //test connection confirmed
-        // GET: api/<MovieController>
-        
-        [HttpGet]
-        public string TestConnection()
+
+        // GET: api/<MovieController>/NumActors
+        [Route("NumActors")]
+        public int actorTotal(int movieNum)
         {
-            SqlConnection conn = new SqlConnection(connectionString);
-
-            return "Ok";
-          
-        }*/
-
-       // GET: api/<MovieController>
-        [HttpGet]
-        public  GetNumActors()
-        {
-           
-
+            Movie m1 = new Movie();
+            return m1.NumActors(movieNum);
         }
 
 
 
-    /*    // GET: api/<MovieController>
+        // GET: api/<MovieController>
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get()
         {
