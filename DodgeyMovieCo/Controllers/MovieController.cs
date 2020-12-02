@@ -10,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace DodgeyMovieCo.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
+    
     public class MovieController : ControllerBase
     {
 
@@ -32,8 +33,19 @@ namespace DodgeyMovieCo.Controllers
             this.connectionString = this.stringBuilder.ConnectionString;
         }
 
+       /* //test connection confirmed
+        // GET: api/<MovieController>
+        
+        [HttpGet]
+        public string TestConnection()
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
 
-     // GET: api/<MovieController>
+            return "Ok";
+          
+        }*/
+
+       // GET: api/<MovieController>
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get()
         {
@@ -42,11 +54,12 @@ namespace DodgeyMovieCo.Controllers
             //ReadOnlyMemory everything into it
             //here    
             //return movie
+
         }
 
 
 
-        // GET: api/<MovieController>
+    /*    // GET: api/<MovieController>
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get()
         {
@@ -82,10 +95,10 @@ namespace DodgeyMovieCo.Controllers
             //Using the list Movies created in step one, 
             //display the total running time of all movies
             return movieList;
-        }
+        }*/
 
 
-        // PUT api/<MovieController>/Ghostbusters
+      /*  // PUT api/<MovieController>/Ghostbusters
         [HttpPut("{movie title}")]
         public ActionResult<Movie> Put([FromBody] string newMovieTitle)
         {
@@ -129,6 +142,6 @@ namespace DodgeyMovieCo.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }
+        }*/
     }
 }
