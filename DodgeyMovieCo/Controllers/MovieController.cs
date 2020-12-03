@@ -430,8 +430,9 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-  
+
        // POST api/<MovieController>/NewActor
+       [Route("CreateUserActor")]
        [HttpPost]
        public ActionResult Post([FromBody] Actor newActor)
        {
@@ -457,18 +458,39 @@ namespace DodgeyMovieCo.Controllers
             }
 
             return Ok();
-        }
-    }
+       }
+    
        
         
-        /*
+       
        // POST api/<MovieController>/CastActorIntoNewMovie
        [HttpPost]
-       public ActionResult<Movie> Post([FromBody] Actor actor, Movie targetMovie)
-       {
-           return Ok(targetMovie);
+       public ActionResult<Movie> Post([FromBody] Casting newCasting)
+        {
+            
+
+            string query1 = "INSERT INTO CASTING (CastID, ActorNo, MoveieNo) " +
+                           $"VALUES ({newCasting.CastID}, {newCasting.ActorNo}, {newCasting.MoveieNo}) ";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand createNewActor = new SqlCommand(query1, connecting);
+
+            try
+            {
+                connecting.Open();
+                createNewActor.ExecuteNonQuery();
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            return Ok();
        }
 
-       */
+       
     }
 }
