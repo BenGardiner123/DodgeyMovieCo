@@ -403,9 +403,7 @@ namespace DodgeyMovieCo.Controllers
         [HttpPost]
         public ActionResult<Movie> Post([FromBody] Movie newUserMovie)
         {
-            MovieDataBseResponseModel movie1 = new MovieDataBseResponseModel();
-          
-
+            
             string query1 = "INSERT INTO MOVIE (MovieNum, Title, ReleaseYear, RunTime) " +
                            $"VALUES ({newUserMovie.MovieNum}, {newUserMovie.Title}, {newUserMovie.ReleaseYear}, {newUserMovie.RunTime}) ";
 
@@ -417,27 +415,7 @@ namespace DodgeyMovieCo.Controllers
             try
             {
                 connecting.Open();
-
-                using (SqlDataReader reader = createNewMovie.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        // ORM - Object Relation Mapping
-                        movie1.Movies.Add(
-                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
-                            new Movie()
-                            {
-                                MovieNum = Convert.ToInt32(reader[0]),
-                                Title = reader[1].ToString(),
-                                ReleaseYear = Convert.ToInt32(reader[2]),
-                                RunTime = (Convert.ToInt32(reader[3]))
-                            });
-
-                    }
-
-                    reader.Close();
-                }
-
+                createNewMovie.ExecuteNonQuery();
                 connecting.Close();
             }
             catch (SqlException ex)
@@ -452,14 +430,38 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-        /*
+  
        // POST api/<MovieController>/NewActor
        [HttpPost]
-       public ActionResult<Actor> Post([FromBody] Actor newActor)
+       public ActionResult Post([FromBody] Actor newActor)
        {
-           return Ok(newActor);
-       }
+            
 
+            string query1 = "INSERT INTO Actor (ActorNo, FullName, GivenName, Surname) " +
+                           $"VALUES ({newActor.ActorNo}, {newActor.FullName}, {newActor.GivenName}, {newActor.Surname}) ";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand createNewActor = new SqlCommand(query1, connecting);
+
+            try
+            {
+                connecting.Open();
+                createNewActor.ExecuteNonQuery();
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            return Ok();
+        }
+    }
+       
+        
+        /*
        // POST api/<MovieController>/CastActorIntoNewMovie
        [HttpPost]
        public ActionResult<Movie> Post([FromBody] Actor actor, Movie targetMovie)
