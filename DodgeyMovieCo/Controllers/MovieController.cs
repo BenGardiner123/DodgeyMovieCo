@@ -66,7 +66,7 @@ namespace DodgeyMovieCo.Controllers
         [HttpGet]
         public List<Movie> GetAllMovies()
         {
-            MovieDataBseResponseModel movie1 = new MovieDataBseResponseModel();
+            CastingResponseModelEnvelope movie1 = new CastingResponseModelEnvelope();
             Movie m1 = new Movie();
             
 
@@ -123,7 +123,7 @@ namespace DodgeyMovieCo.Controllers
         {
             //access the database and display the titles for all the movies 
             //with title that begin with the word “The” (case insensitive)
-            MovieDataBseResponseModel movieResposne = new MovieDataBseResponseModel();
+            CastingResponseModelEnvelope movieResposne = new CastingResponseModelEnvelope();
             //this is wehre the titles will go after they're pulled out o fthe db'
             List<string> titles = new List<string>();
 
@@ -190,7 +190,7 @@ namespace DodgeyMovieCo.Controllers
 
             //access the database and display the titles for all the movies 
             //that Luke Wilson starred in
-            MovieDataBseResponseModel movieResposne = new MovieDataBseResponseModel();
+            CastingResponseModelEnvelope movieResposne = new CastingResponseModelEnvelope();
             //this is wehre the titles will go after they're pulled out o fthe db'
             List<string> titles = new List<string>();
 
@@ -287,7 +287,7 @@ namespace DodgeyMovieCo.Controllers
         {
             //1.In your program, provide a way to change a movie’s runtime found by title.
             //New title to be obtained via user input.  Change must be reflected in the DB.
-            MovieDataBseResponseModel movie1 = new MovieDataBseResponseModel();
+            CastingResponseModelEnvelope movie1 = new CastingResponseModelEnvelope();
 
             string query1 = "UPDATE MOVIE " +
                             $"SET RUNTIME = {userUpdateRequest.RunTime} " +
