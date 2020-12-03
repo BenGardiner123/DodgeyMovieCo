@@ -397,8 +397,8 @@ namespace DodgeyMovieCo.Controllers
         }
 
 
-          
-        
+
+
 
         /*
         // POST api/<MovieController>/CreateNewMovie
@@ -421,12 +421,7 @@ namespace DodgeyMovieCo.Controllers
         {
             return Ok(targetMovie);
         }
-
-
-        // DELETE api/<MovieController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
+        
+        */
     }
 }
