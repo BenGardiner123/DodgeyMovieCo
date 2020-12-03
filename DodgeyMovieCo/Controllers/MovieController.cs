@@ -184,7 +184,7 @@ namespace DodgeyMovieCo.Controllers
     
 
         // GET api/<MovieController>/Luke Wilson
-        [Route("Movie/LukeWilson")]
+        [Route("LukeWilson")]
         [HttpGet]
         public List<string> getLukeWilsonsMovieTitles() { 
 
@@ -257,16 +257,29 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-       /* // GET api/<MovieController>/Luke Wilson
-        [HttpGet("RunningTime")]
-        public List<Movie> Get(string searchWord)
+       // GET api/<MovieController>/RunningTimes
+        [Route(("RunningTimes"))]
+        [HttpGet]
+        public string GetTotalMovieRunTime()
         {
             //Using the list Movies created in step one, 
             //display the total running time of all movies
-            return movieList;
-        }*/
+            
+            //create a list of int's to hold each movies runtimes
+            List<int> runningTimeOutput = new List<int>();
 
-      /*  // PUT api/<MovieController>/Ghostbusters
+            //for each movie pull out theruntime and stick it inside the other list 
+            foreach (var movie in staticResultsHolder)
+            {
+                runningTimeOutput.Add(movie.RunTime);
+            }
+            //calc all the int's inside the list
+            int sumOfAll = runningTimeOutput.Sum();
+
+            return $"the total runtime all of the moveisa in the list is {sumOfAll} mins";
+        }
+
+        // PUT api/<MovieController>/Ghostbusters
         [HttpPut("{movie title}")]
         public ActionResult<Movie> Put([FromBody] string newMovieTitle)
         {
@@ -274,7 +287,8 @@ namespace DodgeyMovieCo.Controllers
             //New title to be obtained via user input.  Change must be reflected in the DB.
             return Ok();
         }
-
+        
+        /*
         // PUT api/<MovieController>/DeppJohnny
         [HttpPut("{id}")]
         public ActionResult<Actor> Put([FromBody] string surname, string givenName)
