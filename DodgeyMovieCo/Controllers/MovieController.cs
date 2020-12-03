@@ -349,7 +349,11 @@ namespace DodgeyMovieCo.Controllers
             string setName = "UPDATE ACTOR A " +
                              $"SET A.SURNAME = {updateActorName.NewSurname} " +
                              $"SET A.FULLNAME = A.GIVENNAME + ' ' + '{updateActorName.NewSurname}' " +
-                             $"WHERE A.GIVENNAME = {updateActorName.GivenName} AND A.SURNAME = {updateActorName.Surname}";
+                             $"WHERE A.GIVENNAME = {updateActorName.GivenName} AND A.SURNAME = {updateActorName.Surname}" +
+                             " GO " + 
+                             "SELECT * FROM ACTOR " +
+                             $"WHERE A.GIVENNAME = { updateActorName.GivenName} AND A.SURNAME = { updateActorName.Surname} ";
+            
 
 
             // create connection and command
@@ -387,15 +391,14 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-            return actorResponse.Actors;
+            return Ok(actorResponse.Actors);
 
 
         }
 
 
-            return Ok();
-        }
-
+          
+        
 
         /*
         // POST api/<MovieController>/CreateNewMovie
