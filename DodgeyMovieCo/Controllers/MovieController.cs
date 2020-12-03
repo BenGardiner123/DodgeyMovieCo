@@ -18,6 +18,7 @@ namespace DodgeyMovieCo.Controllers
     public class MovieController : ControllerBase
     {
         public static List<Movie> staticResultsHolder = new List<Movie>();
+        public static List<Casting> staticCastingHolder = new List<Casting>();
 
         IConfiguration configuration;
         // have to add this using nuget sqldataclient
@@ -35,7 +36,6 @@ namespace DodgeyMovieCo.Controllers
             this.stringBuilder.Password = this.configuration.GetSection("DBConnectionStrings").GetSection("Password").Value;
             this.connectionString = this.stringBuilder.ConnectionString;
         }
-
 
         // GET: api/<MovieController>/NumActors
 
