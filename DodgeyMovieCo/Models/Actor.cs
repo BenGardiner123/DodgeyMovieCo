@@ -20,7 +20,9 @@ namespace DodgeyMovieCo
 
         }
 
-        public string setFullName(string connectionString, string fullname)
+    
+
+        public List<Actor> setFullName(string connectionString, string fullname)
         {
             ActorResponseModel actorResponse = new ActorResponseModel();
             Movie m1 = new Movie();

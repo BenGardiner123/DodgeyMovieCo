@@ -10,12 +10,12 @@ namespace XUnitTestDodgeyMovies
        
         //these arent validated theorydata
        
-        [Theory]
+     /*   [Theory]
         [InlineData("Tony Barrett", "Tony", "Barrett")]
         public void setFullNameTest(string expected, string givenName, string surname)
         {
             Assert.Equal(expected, a1.setFullName(givenName, surname));
 
-        }
+        }*/
     }
 }

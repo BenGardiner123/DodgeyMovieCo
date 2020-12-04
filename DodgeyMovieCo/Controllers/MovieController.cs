@@ -24,6 +24,7 @@ namespace DodgeyMovieCo.Controllers
         // have to add this using nuget sqldataclient
         SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
 
+
         public string connectionString;
 
         public MovieController(IConfiguration iConfig)
@@ -36,6 +37,15 @@ namespace DodgeyMovieCo.Controllers
             this.stringBuilder.Password = this.configuration.GetSection("DBConnectionStrings").GetSection("Password").Value;
             this.connectionString = this.stringBuilder.ConnectionString;
         }
+
+        [Route("TotalCasting")]
+        [HttpGet]
+        public ActionResult ActorTotal()
+        {
+            Casting c1 = new Casting();
+            return Ok(c1.getAllCastings(connectionString));
+        }
+
 
         // GET: api/<MovieController>/NumActors
 

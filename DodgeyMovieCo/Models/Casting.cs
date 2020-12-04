@@ -12,7 +12,34 @@ namespace DodgeyMovieCo.Models
         public int ActorNo { get; set; }
         public int MoveieNo { get; set; }
 
-        public void getAllCastings(string connectionString)
+
+
+        public Casting()
+        {
+      /*      addcastins();*/
+        }
+
+        public Casting(int castID, int actorNo, int moveieNo)
+        {
+            CastID = castID;
+            ActorNo = actorNo;
+            MoveieNo = moveieNo;
+            //addcastins();
+        }
+
+
+       /* public void addcastins()
+        {
+            staticCastingHolder.Add(new Casting(1, 1, 12445));
+            staticCastingHolder.Add(new Casting(2, 2, 12445));
+            staticCastingHolder.Add(new Casting(3, 3, 12445));
+            staticCastingHolder.Add(new Casting(4, 1, 862));
+            staticCastingHolder.Add(new Casting(5, 2, 862));
+            staticCastingHolder.Add(new Casting(6, 3, 862));
+            staticCastingHolder.Add(new Casting(7, 1, 552));
+        }*/
+
+        public int getAllCastings(string connectionString)
         {
             CastingResponseModelEnvelope castingResults = new CastingResponseModelEnvelope();
 
@@ -54,10 +81,13 @@ namespace DodgeyMovieCo.Models
                 throw new ApplicationException($"Some sql error happened + {ex}");
             }
 
-            staticCastingHolder = castingResults.CastingList.ToList();
+            var results = castingResults.CastingList.ToList();
+            foreach (var c in results)
+            {
+                DodgeyMovieCo.Controllers.MovieController.staticCastingHolder.Add(c);
+            }
 
-            return movie1.Movies;
-
+            return DodgeyMovieCo.Controllers.MovieController.staticCastingHolder.Count;
         }
 
 

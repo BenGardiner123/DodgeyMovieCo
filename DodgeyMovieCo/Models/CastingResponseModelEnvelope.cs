@@ -8,5 +8,7 @@ namespace DodgeyMovieCo.Models
     public class CastingResponseModelEnvelope
     {
        public List<Casting> CastingList = new List<Casting>();
+
+       
     }
 }

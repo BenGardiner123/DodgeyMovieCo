@@ -16,10 +16,14 @@ namespace DodgeyMovieCo
         public int ReleaseYear { get; set; }
         public int RunTime { get; set; }
 
+       
         public Movie()
         {
+           
 
         }
+
+     
 
         public List<NumActorsResponseModel> NumActors(string connectionString, int MovieNum) {
             NumActorsResponseEnvelope r1 = new NumActorsResponseEnvelope();
