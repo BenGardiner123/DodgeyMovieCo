@@ -13,8 +13,8 @@ namespace DodgeyMovieCo
     {
         public int MovieNum { get; set; }
         public string Title { get; set; }
-        public int ReleaseYear { get; set; }
-        public int RunTime { get; set; }
+        public short ReleaseYear { get; set; }
+        public short RunTime { get; set; }
         public List<Actor> ActorList { get; set; }
 
 
@@ -23,10 +23,23 @@ namespace DodgeyMovieCo
            
 
         }
+        
+        /*
+            didnt really get the idea of havig an actor list in here - it makes a lot more sense now 
+         */
+        public int NumActors()
+        {
+            return this.ActorList.Count;
+        }
+
+        public int GetAge()
+        {
+            return DateTime.Now.Year - this.ReleaseYear;
+        }
 
      
 
-        public List<NumActorsResponseModel> NumActors(string connectionString, int MovieNum) {
+        public List<NumActorsResponseModel> NumActors1(string connectionString, int MovieNum) {
             NumActorsResponseEnvelope r1 = new NumActorsResponseEnvelope();
             Movie m1 = new Movie();
 
@@ -73,7 +86,7 @@ namespace DodgeyMovieCo
 
 
 
-        public int GetAge(string connectionString, string MovieTitle)
+        public int GetAge1(string connectionString, string MovieTitle)
         {
             CastingResponseModelEnvelope movieResponse = new CastingResponseModelEnvelope();
             Movie m1 = new Movie();
