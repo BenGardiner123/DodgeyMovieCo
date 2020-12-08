@@ -1,4 +1,5 @@
 ﻿using DodgeyMovieCo.Models;
+using DodgeyMovieCo.MovieClassLb;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -17,25 +18,12 @@ namespace DodgeyMovieCo.Controllers
     
     public class MovieController : ControllerBase
     {
-        public static List<Movie> staticResultsHolder = new List<Movie>();
-        public static List<Casting> staticCastingHolder = new List<Casting>();
 
-        IConfiguration configuration;
-        // have to add this using nuget sqldataclient
-        SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
+        private DatabaseLayer _DatabaseLayer;
 
-
-        public string connectionString;
-
-        public MovieController(IConfiguration iConfig)
+        public MovieController(DatabaseLayer databaseLayer)
         {
-            this.configuration = iConfig;
-
-            this.stringBuilder.DataSource = this.configuration.GetSection("DBConnectionStrings").GetSection("Url").Value;
-            this.stringBuilder.InitialCatalog = this.configuration.GetSection("DBConnectionStrings").GetSection("Database").Value;
-            this.stringBuilder.UserID = this.configuration.GetSection("DBConnectionStrings").GetSection("User").Value;
-            this.stringBuilder.Password = this.configuration.GetSection("DBConnectionStrings").GetSection("Password").Value;
-            this.connectionString = this.stringBuilder.ConnectionString;
+            this._DatabaseLayer = databaseLayer;
         }
 /*
         [Route("TotalCasting")]
