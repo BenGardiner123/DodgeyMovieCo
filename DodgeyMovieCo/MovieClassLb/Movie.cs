@@ -15,8 +15,9 @@ namespace DodgeyMovieCo
         public string Title { get; set; }
         public int ReleaseYear { get; set; }
         public int RunTime { get; set; }
+        public List<Actor> ActorList { get; set; }
 
-       
+
         public Movie()
         {
            

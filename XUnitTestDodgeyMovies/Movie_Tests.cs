@@ -17,19 +17,16 @@ namespace XUnitTestDodgeyMovies
         //Test 1 Case 1 - Check that the function returns an int?
 
         
+       
+        
         [Fact]
-        public void PassingTest()
+
+        public void NumActors_CheckIntReturned_Success()
         {
-            Assert.Equal(4, (2 + 2));
+
+            //something along the lines of isString
+            Assert.Equal(1, )
         }
-        /*     [Fact]
-
-             public void NumActors_CheckIntReturned_Success()
-             {
-
-                 //something along the lines of isString
-                 Assert.Equal(2023, DodgeyMovieCo.Controllers.MovieController.staticCastingHolder.Count);
-             }*/
 
 
         /* //Test 1 Case 3 - Input is not a number - should throw an exception
