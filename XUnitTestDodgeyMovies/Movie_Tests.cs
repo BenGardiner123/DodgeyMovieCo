@@ -32,36 +32,48 @@ namespace XUnitTestDodgeyMovies
 
         }
 
+        [Fact]
+        //Test 1 Case 2 - add 3 actors to the list - returns three
 
-        /* //Test 1 Case 3 - Input is not a number - should throw an exception
-         [Theory]
-         [InlineData(50, 12445)]
-         [InlineData(20, 862)]
-         [InlineData(17, 552)]
-         public void NumActors_InputIsString_ThrowAnExcepion(int expected, int movieNum)
+        public void NumActors_Add3_returns3()
          {
-             Assert.Equal(expected, m1.NumActors(movieNum));
+            Movie m1 = new DodgeyMovieCo.Movie()
+            {
+                ActorList = new System.Collections.Generic.List<Actor>() 
+                {
+                    new Actor()
+                    {
+                        ActorNo = 7743,
+                        FullName = "Pedro Ximinez",
+                        GivenName = "Pedro",
+                        Surname = "Ximinez"
+                        
+                    },
+                      new Actor()
+                    {
+                        ActorNo = 7742,
+                        FullName = "Daniel Ortega",
+                        GivenName = "Daniel",
+                        Surname = "Ortega"
+
+                    },
+                        new Actor()
+                    {
+                        ActorNo = 7744,
+                        FullName = "Tomas Borge",
+                        GivenName = "Tomas",
+                        Surname = "Borge"
+
+                    }
+                }
+
+            };
+
+            Assert.Equal(3, m1.NumActors());
+
          }
 
-         //Test 1 Case 4 - Input is a number - but a negative one
-         [Theory]
-         [InlineData(50, 12445)]
-         [InlineData(20, 862)]
-         [InlineData(17, 552)]
-         public void NumActors_InputNegNum_ThrowsEx(int expected, int movieNum)
-         {
-             Assert.Equal(expected, m1.NumActors(movieNum));
-         }
-
-         //Test 1 Case 5 - Case 5 - Input is outside range of int
-         [Theory]
-         [InlineData(50, 12445)]
-         [InlineData(20, 862)]
-         [InlineData(17, 552)]
-         public void NumActors_InputOutsideRange_ThrowsEx(int expected, int movieNum)
-         {
-             Assert.Equal(expected, m1.NumActors(movieNum));
-         }*/
+       
 
         //*************************************************** TEST NUMBER 2 ********************************************************
 
