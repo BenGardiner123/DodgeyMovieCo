@@ -12,13 +12,20 @@ namespace XUnitTestDodgeyMovies
 
 
 
-        //*************************************************** TEST NUMBER 1 ********************************************************
+        //*************************************************** Movie TEST ********************************************************
 
-        //Test 1 Case 1 - Check that the function returns an int?
+        [Fact]
 
-        
-       
-        
+        public void NumActors_CheckType_Success()
+        {
+            Movie m1 = new DodgeyMovieCo.Movie()
+            {
+                ActorList = new System.Collections.Generic.List<Actor>() { }
+
+            };
+            Assert.IsType<int>(m1.NumActors());
+        }
+
         [Fact]
 
         public void NumActors_CheckReturned_Success()
@@ -33,7 +40,20 @@ namespace XUnitTestDodgeyMovies
         }
 
         [Fact]
-        //Test 1 Case 2 - add 3 actors to the list - returns three
+
+        public void NumActors_NotTheSame_Success()
+        {
+            Movie m1 = new DodgeyMovieCo.Movie()
+            {
+                ActorList = new System.Collections.Generic.List<Actor>() { }
+
+            };
+            Assert.NotEqual(1, m1.NumActors());
+
+        }
+
+        [Fact]
+    
 
         public void NumActors_Add3_returns3()
          {
@@ -75,59 +95,51 @@ namespace XUnitTestDodgeyMovies
 
        
 
-        //*************************************************** TEST NUMBER 2 ********************************************************
+        //*************************************************** Actor TEST ********************************************************
 
 
-        /*//Test 2  case 1  - Check that the function returns an int?
-        [Theory]
-        [InlineData(50, 12445)]
-        [InlineData(-29, 12445)]
+        
+       [Fact]
 
-        public void MovieAge_CheckIntReturned_Success(int expected, int movieNum)
+        public void MovieAge_CheckIntReturned_Success()
         {
+            Movie movietest = new Movie()
+            {
+                ReleaseYear = 1888
+            };
+
             //something like IsInt()?
-            Assert.Equal(expected, m1.GetAge(movieNum));
+            Assert.IsType<int>(movietest.GetAge());
         }
 
-        //Test 2  case 2  - Happy Test - information entered is in the db correct output
-        [Theory]
-        [InlineData(50, 12445)]
-        [InlineData(-29, 12445)]
+        
+        [Fact]
 
-        public void MovieAge_CorrectInput_CorreectOutput(int expected, int movieNum)
+        public void MovieAge_CheckAge_Success()
         {
-            Assert.Equal(expected, m1.GetAge(movieNum));
+            Movie movietest = new Movie()
+            {
+                ReleaseYear = 1888
+            };
+
+            //something like IsInt()?
+            Assert.Equal(132, movietest.GetAge());
         }
 
-        //Test 2  case 3 - Input is a spcial char or NaN- should throw an exception
-        [Theory]
-        [InlineData(50, 12445)]
-        [InlineData(-29, 12445)]
+        [Fact]
 
-        public void MovieAge_InputNaN_ThrowsEx(int expected, int movieNum)
+        public void MovieAge_CheckAgeUnequal_Success()
         {
-            Assert.Equal(expected, m1.GetAge(movieNum));
+            Movie movietest = new Movie()
+            {
+                ReleaseYear = 1888
+            };
+
+            //something like IsInt()?
+            Assert.NotEqual(1323, movietest.GetAge());
         }
 
-        //Test 2  Case 4 - Input is a number - but a negative one
-        [Theory]
-        [InlineData(50, 12445)]
-        [InlineData(-29, 12445)]
-
-        public void MovieAge_InputNegNum_ThrowsEx(int expected, int movieNum)
-        {
-            Assert.Equal(expected, m1.GetAge(movieNum));
-        }
-
-        //Test 2  Case 5 - Input is outside range of int
-        [Theory]
-        [InlineData(50, 12445)]
-        [InlineData(-29, 12445)]
-
-        public void MovieAge_InputOutsideRange_ThrowsEx(int expected, int movieNum)
-        {
-            Assert.Equal(expected, m1.GetAge(movieNum));
-        }*/
+     
 
     }
 }
