@@ -30,6 +30,41 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
 
+
+        public string dbRedirect()
+        {
+            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder()
+            {
+
+            }
+            public string connectionString;
+            
+
+            // create connection and command
+            using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        // define parameters and their values
+                        cmd.Parameters.Add("@dateTimeStarted", SqlDbType.DateTime).Value = angularGameRequest.DateTimeStarted;
+                        cmd.Parameters.Add("@username", SqlDbType.VarChar, 50).Value = angularGameRequest.Username;
+                        cmd.Parameters.Add("@Numrounds", SqlDbType.Int).Value = angularGameRequest.roundLimit;
+
+                        // open connection, execute INSERT, close connection
+
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
+
+                    }
+
+                }
+
+
+        }
+
         
         public List<Movie> GetAllMovies()
         {

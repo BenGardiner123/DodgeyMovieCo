@@ -12,13 +12,31 @@ namespace DodgeyMovieCo.Controllers
     [ApiController]
     public class ExceptionController : ControllerBase
     {
-        //will need to instntitate a new class of dblayer here and then call the db with the fake details - then redirect
+        //will need to instntitate a new class of dblayer here and for every controller -  
         private DatabaseLayer _databaseLayer;
         public ExceptionController(DatabaseLayer databaseLayer)
         {
             this._databaseLayer = databaseLayer;
         }
 
-        []
+       
+        [HttpGet]
+        public ActionResult<string> attemptDbConnectThenRedirect()
+        {
+
+            string result = _databaseLayer.dbRedirect();
+
+            return Ok(result);
+
+        
+
+        }
+
+
+
+       
+
+
+
     }
 }
