@@ -21,11 +21,15 @@ namespace XUnitTestDodgeyMovies
         
         [Fact]
 
-        public void NumActors_CheckIntReturned_Success()
+        public void NumActors_CheckReturned_Success()
         {
+            Movie m1 = new DodgeyMovieCo.Movie()
+            {
+                ActorList = new System.Collections.Generic.List<Actor>() { }
 
-            //something along the lines of isString
-            Assert.Equal(1, )
+            };
+            Assert.Equal(0, m1.NumActors());
+
         }
 
 

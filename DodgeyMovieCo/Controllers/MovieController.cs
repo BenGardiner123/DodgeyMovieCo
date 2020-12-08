@@ -37,7 +37,7 @@ namespace DodgeyMovieCo.Controllers
             this.stringBuilder.Password = this.configuration.GetSection("DBConnectionStrings").GetSection("Password").Value;
             this.connectionString = this.stringBuilder.ConnectionString;
         }
-
+/*
         [Route("TotalCasting")]
         [HttpGet]
         public ActionResult ActorTotal()
@@ -499,7 +499,7 @@ namespace DodgeyMovieCo.Controllers
             }
 
             return Ok();
-       }
+       }*/
 
        
     }
