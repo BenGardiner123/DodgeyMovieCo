@@ -14,9 +14,9 @@ namespace DodgeyMovieCo.MovieClassLb
         IConfiguration configuration;
         // have to add this using nuget sqldataclient
         SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
-
-
         public string connectionString;
+
+
 
         public DatabaseLayer(IConfiguration iConfig)
         {
@@ -33,34 +33,60 @@ namespace DodgeyMovieCo.MovieClassLb
 
         public string dbRedirect()
         {
-            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder()
-            {
 
-            }
-            public string connectionString;
-            
+            SqlConnectionStringBuilder dodgyestringBuilder = new SqlConnectionStringBuilder();
+            dodgyestringBuilder.DataSource = "no.database.here.com";
+            dodgyestringBuilder.InitialCatalog = "Is";
+            dodgyestringBuilder.UserID = "Wally";
+            dodgyestringBuilder.Password = "Where";
+
 
             // create connection and command
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            /*
+             implementing this inside the brackets makes sure that all open connections are terminated
+             */
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(dodgyestringBuilder.ConnectionString))
                 {
+                    var query = "select * from sys.tables";
+
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        // define parameters and their values
-                        cmd.Parameters.Add("@dateTimeStarted", SqlDbType.DateTime).Value = angularGameRequest.DateTimeStarted;
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar, 50).Value = angularGameRequest.Username;
-                        cmd.Parameters.Add("@Numrounds", SqlDbType.Int).Value = angularGameRequest.roundLimit;
 
                         // open connection, execute INSERT, close connection
-
-
                         conn.Open();
-                        cmd.ExecuteNonQuery();
+                        //apparently when you .open it should throw the error here
                         conn.Close();
 
 
                     }
 
                 }
+
+            }
+            //hopefully we do the same thing below but wuth te right details  - then when this fails the code below will execute
+            //taken from https://stackoverflow.com/questions/434864/how-to-check-if-connection-string-is-valid
+            catch (SqlException ex)
+            {
+
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(this.connectionString))
+                    { 
+                        conn.Open();
+                        return "Connection redirected succesfully" + ex.Message;
+                    }
+                    
+                }
+                catch (SqlException SqlEx)
+                {
+                    return "Uh oh those dodgey connection details created a much larger issue " + SqlEx;
+                }
+
+                
+            }
+           
 
 
         }
