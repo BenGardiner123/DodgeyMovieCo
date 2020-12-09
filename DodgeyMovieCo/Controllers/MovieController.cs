@@ -102,8 +102,8 @@ namespace DodgeyMovieCo.Controllers
         //update task 1
         // PUT api/<MovieController>/ChangeRuntime
         [Route("ChangeRuntime")]
-        [HttpPut]
-        public ActionResult<Movie> Put([FromBody] UpdateRuntimeRequestModel userUpdateRequest)
+        [HttpPatch]
+        public ActionResult<Movie> ChangeMovieRuntime([FromBody] UpdateRuntimeRequestModel userUpdateRequest)
         {
             var output = _DatabaseLayer.ChangeMovieRuntime(userUpdateRequest);
             return Ok(output);

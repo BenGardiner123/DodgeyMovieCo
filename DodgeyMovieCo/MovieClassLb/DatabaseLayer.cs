@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -294,10 +295,10 @@ namespace DodgeyMovieCo.MovieClassLb
             MovieDatabaseserverRespnse movieResposne = new MovieDatabaseserverRespnse();
 
             string query1 = "UPDATE MOVIE " +
-                            $"SET RUNTIME = {userUpdateRequest.RunTime} " +
-                            $"where LOWER m.title like LOWER ('%{userUpdateRequest.Title}%') " +
-                            "Select * from MOVIE " +
-                            $"where LOWER m.title like LOWER ('%{userUpdateRequest.Title}%') ";
+                            "SET RUNTIME = @userRuntime " +
+                            "where LOWER m.title like LOWER @title " + 
+                            "LIMIT 1";
+                           
 
 
             // create connection and command
@@ -306,7 +307,8 @@ namespace DodgeyMovieCo.MovieClassLb
 
             using (SqlCommand changeRuntime = new SqlCommand(query1, connecting))
             {
-
+                changeRuntime.Parameters.Add("@userRuntime", SqlDbType.VarChar, 50).Value = userUpdateRequest.RunTime;
+                changeRuntime.Parameters.Add("@title", SqlDbType.VarChar, 50).Value = userUpdateRequest.Title;
 
                 try
                 {
