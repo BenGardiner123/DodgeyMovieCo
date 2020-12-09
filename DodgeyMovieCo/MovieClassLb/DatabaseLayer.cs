@@ -86,8 +86,9 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
         
-       /* public List<Movie> GetAllMovies()
+        public List<Movie> GetAllMovies()
         {
+            List<Movie> Movies = new List<Movie>();
             
             string query1 = "select * from Movie";
 
@@ -105,14 +106,14 @@ namespace DodgeyMovieCo.MovieClassLb
                     while (reader.Read())
                     {
                         // ORM - Object Relation Mapping
-                        movie1.Movies.Add(
-                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                        Movies.Add(
+                            
                             new Movie()
                             {
                                 MovieNum = Convert.ToInt32(reader[0]),
                                 Title = reader[1].ToString(),
-                                ReleaseYear = Convert.ToInt32(reader[2]),
-                                RunTime = (Convert.ToInt32(reader[3]))
+                                ReleaseYear = Convert.ToInt16(reader[2]),
+                                RunTime = Convert.ToInt16(reader[3])
                             });
 
                     }
@@ -127,13 +128,81 @@ namespace DodgeyMovieCo.MovieClassLb
                 throw new ApplicationException($"Some sql error happened + {ex}");
             }
 
-            staticResultsHolder = movie1.Movies.ToList();
+            
 
-            return movie1.Movies;
+            return Movies;
 
 
 
-        }*/
+        }
+
+
+        public List<string> TitlesThatBeginWith()
+        {
+            //access the database and display the titles for all the movies 
+            //with title that begin with the word “The” (case insensitive)
+            MovieDatabaseserverRespnse movieResposne = new MovieDatabaseserverRespnse();
+            //this is wehre the titles will go after they're pulled out o fthe db'
+            List<string> titles = new List<string>();
+
+            string query1 = "select * from Movie M " +
+                            "where LOWER (M.TITLE) LIKE LOWER ('%The%')";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand getMovies = new SqlCommand(query1, connecting);
+
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getMovies.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movieResposne.Movies.Add(
+                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                            new Movie()
+                            {
+                                MovieNum = Convert.ToInt32(reader[0]),
+                                Title = reader[1].ToString(),
+                                ReleaseYear = Convert.ToInt16(reader[2]),
+                                RunTime = Convert.ToInt16(reader[3])
+                            });
+
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            //using LINQ to filter all the strings out of the list -which wil be only the titles
+            var result = movieResposne.Movies.OfType<string>();
+
+
+            // Loop through the collection and add all those titles to a list and then return them
+            foreach (var title in result)
+            {
+                titles.Add(title);
+            }
+
+            return titles;
+
+
+
+        }
+
+
+
+
 
     }
 }

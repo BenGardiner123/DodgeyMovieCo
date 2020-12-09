@@ -9,6 +9,5 @@ namespace DodgeyMovieCo.Models
     {
        public List<Casting> CastingList = new List<Casting>();
 
-       
     }
 }

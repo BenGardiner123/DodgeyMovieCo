@@ -25,163 +25,64 @@ namespace DodgeyMovieCo.Controllers
         {
             this._DatabaseLayer = databaseLayer;
         }
-/*
-        [Route("TotalCasting")]
-        [HttpGet]
-        public ActionResult ActorTotal()
-        {
-            Casting c1 = new Casting();
-            return Ok(c1.getAllCastings(connectionString));
-        }
+
+        /* [Route("TotalCasting")]
+         [HttpGet]
+         public ActionResult ActorTotal()
+         {
+             Casting c1 = new Casting();
+             return Ok(c1.getAllCastings(connectionString));
+         }*/
 
 
-        // GET: api/<MovieController>/NumActors
+        /*  // GET: api/<MovieController>/NumActors
 
-        [Route("NumActors/{movieNum}")]
-        [HttpGet]
-        public List<NumActorsResponseModel> ActorTotal(int movieNum)
-        {
-            Movie m2 = new Movie();
-            return m2.NumActors(connectionString, movieNum);
-        }
+          [Route("NumActors/{movieNum}")]
+          [HttpGet]
+          public List<NumActorsResponseModel> ActorTotal(int movieNum)
+          {
+              Movie m2 = new Movie();
+              return m2.NumActors(connectionString, movieNum);
+          }
+  */
 
 
+        /*      // GET: api/<MovieController>/MovieAge
+              [Route("MovieAge/{movieTitle}")]
+              [HttpGet]
+              public int GetMovieAge(string movieTitle)
+              {
+                  Movie m2 = new Movie();
+                  return m2.GetAge(connectionString, movieTitle);
 
-        // GET: api/<MovieController>/MovieAge
-        [Route("MovieAge/{movieTitle}")]
-        [HttpGet]
-        public int GetMovieAge(string movieTitle)
-        {
-            Movie m2 = new Movie();
-            return m2.GetAge(connectionString, movieTitle);
-
-        }
+              }*/
 
 
         //ReadTask1
-        // GET: api/<MovieController>/AllMovies
+        // GET: /<MovieController>/AllMovies
         [Route("AllMovies")]
         [HttpGet]
-        public List<Movie> GetAllMovies()
+        public ActionResult<List<Movie>> GetAllMovies()
         {
-            CastingResponseModelEnvelope movie1 = new CastingResponseModelEnvelope();
-            Movie m1 = new Movie();
-            
-
-            string query1 = "select * from Movie";
-
-            // create connection and command
-            SqlConnection connecting = new SqlConnection(connectionString);
-
-            SqlCommand getActorsCmd = new SqlCommand(query1, connecting);
-           
-            try
-            {
-                connecting.Open();
-
-                using (SqlDataReader reader = getActorsCmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        // ORM - Object Relation Mapping
-                        movie1.Movies.Add(
-                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
-                            new Movie()
-                            {
-                                MovieNum = Convert.ToInt32(reader[0]),
-                                Title = reader[1].ToString(),
-                                ReleaseYear = Convert.ToInt32(reader[2]),
-                                RunTime = (Convert.ToInt32(reader[3]))
-                            });
-                    
-                    }
-
-                    reader.Close();
-                }
-
-                connecting.Close();
-            }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException($"Some sql error happened + {ex}");
-            }
-
-            staticResultsHolder = movie1.Movies.ToList();
-            
-            return movie1.Movies;
-
-
+            var output = _DatabaseLayer.GetAllMovies();
+            return output;
 
         }
         
-        // GET api/<MovieController>/The
+       // GET api/<MovieController>/The
         [Route("TitleContainsThe")]
         [HttpGet]
         public List<string> TitlesThatBeginWith()
         {
-            //access the database and display the titles for all the movies 
-            //with title that begin with the word “The” (case insensitive)
-            CastingResponseModelEnvelope movieResposne = new CastingResponseModelEnvelope();
-            //this is wehre the titles will go after they're pulled out o fthe db'
-            List<string> titles = new List<string>();
 
-            string query1 = "select * from Movie " +
-                            $"where LOWER m.title like LOWER ('%The%')";
-                           
-            // create connection and command
-            SqlConnection connecting = new SqlConnection(connectionString);
+            var output = _DatabaseLayer.TitlesThatBeginWith();
 
-            SqlCommand getMovies = new SqlCommand(query1, connecting);
-
-            try
-            {
-                connecting.Open();
-
-                using (SqlDataReader reader = getMovies.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        // ORM - Object Relation Mapping
-                        movieResposne.Movies.Add(
-                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
-                            new Movie()
-                            {
-                                MovieNum = Convert.ToInt32(reader[0]),
-                                Title = reader[1].ToString(),
-                                ReleaseYear = Convert.ToInt32(reader[2]),
-                                RunTime = (Convert.ToInt32(reader[3]))
-                            });
-
-                    }
-
-                    reader.Close();
-                }
-
-                connecting.Close();
-            }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException($"Some sql error happened + {ex}");
-            }
-
-            //using LINQ to filter all the strings out of the list -which wil be only the titles
-            var result = movieResposne.Movies.OfType<string>();
-
-
-            // Loop through the collection and add all those titles to a list and then return them
-            foreach (var title in result)
-            {
-                titles.Add(title);
-            }
-
-            return titles;
-
-
-
+            return output;
+      
         }
     
 
-        // GET api/<MovieController>/Luke Wilson
+  /*      // GET api/<MovieController>/Luke Wilson
         [Route("LukeWilson")]
         [HttpGet]
         public List<string> getLukeWilsonsMovieTitles() { 
@@ -252,10 +153,10 @@ namespace DodgeyMovieCo.Controllers
 
 
         }
+*/
 
 
-
-       // GET api/<MovieController>/RunningTimes
+  /*     // GET api/<MovieController>/RunningTimes
         [Route(("RunningTimes"))]
         [HttpGet]
         public string GetTotalMovieRunTime()
@@ -276,8 +177,9 @@ namespace DodgeyMovieCo.Controllers
 
             return $"the total runtime all of the moveisa in the list is {sumOfAll} mins";
         }
+  */
 
-        //update task 1
+ /*       //update task 1
         // PUT api/<MovieController>/ChangeRuntime
         [Route("ChangeRuntime")]
         [HttpPut]
@@ -332,9 +234,9 @@ namespace DodgeyMovieCo.Controllers
 
             return Ok(movie1.Movies);
         }
+        */
         
-        
-        // PUT api/<MovieController>/DeppJohnny
+    /*    // PUT api/<MovieController>/DeppJohnny
         [Route("ChangeActorName")]
         [HttpPut]
         public ActionResult<Actor> Put([FromBody] UpdateActorNameRequest updateActorName)
@@ -392,11 +294,11 @@ namespace DodgeyMovieCo.Controllers
             return Ok(actorResponse.Actors);
 
 
-        }
+        }*/
 
 
        
-        // POST api/<MovieController>/CreateNewMovie
+    /*    // POST api/<MovieController>/CreateNewMovie
         [Route("CreateUserMovie")]
         [HttpPost]
         public ActionResult<Movie> Post([FromBody] Movie newUserMovie)
@@ -423,12 +325,12 @@ namespace DodgeyMovieCo.Controllers
 
             return Ok();
         }
+*/
 
 
 
 
-
-
+/*
        // POST api/<MovieController>/NewActor
        [Route("CreateUserActor")]
        [HttpPost]
@@ -457,11 +359,11 @@ namespace DodgeyMovieCo.Controllers
 
             return Ok();
        }
-    
+    */
        
         
        
-       // POST api/<MovieController>/CastActorIntoNewMovie
+   /*    // POST api/<MovieController>/CastActorIntoNewMovie
        [HttpPost]
        public ActionResult<Movie> Post([FromBody] Casting newCasting)
         {
@@ -487,8 +389,8 @@ namespace DodgeyMovieCo.Controllers
             }
 
             return Ok();
-       }*/
-
+       }
+*/
        
     }
 }
