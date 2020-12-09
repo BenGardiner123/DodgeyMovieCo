@@ -97,7 +97,7 @@ namespace DodgeyMovieCo.Controllers
             var output = _DatabaseLayer.GetTotalMovieRunTime();
             return output;
         }
-  
+
 
         //update task 1
         // PUT api/<MovieController>/ChangeRuntime
@@ -105,55 +105,11 @@ namespace DodgeyMovieCo.Controllers
         [HttpPut]
         public ActionResult<Movie> Put([FromBody] UpdateRuntimeRequestModel userUpdateRequest)
         {
-            //1.In your program, provide a way to change a movie’s runtime found by title.
-            //New title to be obtained via user input.  Change must be reflected in the DB.
-            CastingResponseModelEnvelope movie1 = new CastingResponseModelEnvelope();
-
-            string query1 = "UPDATE MOVIE " +
-                            $"SET RUNTIME = {userUpdateRequest.RunTime} " +
-                            $"where LOWER m.title like LOWER ('%{userUpdateRequest.Title}%') " +
-                            "Select * from MOVIE " +
-                            $"where LOWER m.title like LOWER ('%{userUpdateRequest.Title}%') ";
-
-
-            // create connection and command
-            SqlConnection connecting = new SqlConnection(connectionString);
-
-            SqlCommand changeRuntime = new SqlCommand(query1, connecting);
-
-            try
-            {
-                connecting.Open();
-
-                using (SqlDataReader reader = changeRuntime.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        // ORM - Object Relation Mapping
-                        movie1.Movies.Add(
-                            // pushing the mapped object intot a new object and pushing to the list.
-                            new Movie()
-                            {
-                                MovieNum = Convert.ToInt32(reader[0]),
-                                Title = reader[1].ToString(),
-                                ReleaseYear = Convert.ToInt32(reader[2]),
-                                RunTime = (Convert.ToInt32(reader[3]))
-                            });
-
-                    }
-
-                    reader.Close();
-                }
-
-                connecting.Close();
-            }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException($"Some sql error happened + {ex}");
-            }
-
-            return Ok(movie1.Movies);
+            var output = _DatabaseLayer.ChangeMovieRuntime(userUpdateRequest);
+            return Ok(output);
         }
+
+          
         
         
     /*    // PUT api/<MovieController>/DeppJohnny
