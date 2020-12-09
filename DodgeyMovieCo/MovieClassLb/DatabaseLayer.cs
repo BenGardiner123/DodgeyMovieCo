@@ -346,8 +346,86 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
 
+        public Actor updateActor(UpdateActorNameRequest updateActorName)
+        {
+            //Provide a way to change an actor’s surname and fullname, found by givenname and surname. 
+            //New surname to obtained via user input.Change must be reflected in the DB.
+            ActorResponseModel actorResponse = new ActorResponseModel();
+
+
+            string setName = "UPDATE ACTOR  " +
+                             "SET SURNAME = @newSurname, " +
+                             "FULLNAME = @givename + ' ' + @newSurname " +
+                             "WHERE GIVENNAME = @givename SURNAME = @surname";
+                            
 
 
 
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+            using (SqlCommand setActorNameUsingSurnameAndFullname = new SqlCommand(setName, connecting)) 
+            {
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@newSurname", SqlDbType.VarChar, 100).Value = updateActorName.NewSurname;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = updateActorName.GivenName;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = updateActorName.Surname;
+                try
+                {
+                    connecting.Open();
+                    setActorNameUsingSurnameAndFullname.ExecuteNonQuery();
+                    connecting.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw new ApplicationException($"Some sql error happened + {ex}");
+                }
+
+            }
+
+            string getActor = "select ACTOR  " +
+                              "WHERE GIVENNAME = @givename and SURNAME = @newSurname";
+
+            // create connection and command
+            SqlConnection connecting1 = new SqlConnection(connectionString);
+            using (SqlCommand getActorCmd = new SqlCommand(getActor, connecting1))
+            {
+                getActorCmd.Parameters.Add("@newSurname", SqlDbType.VarChar, 100).Value = updateActorName.NewSurname;
+                getActorCmd.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = updateActorName.GivenName;
+                getActorCmd.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = updateActorName.Surname;
+                try
+                {
+                   
+                    connecting.Open();
+
+                    using (SqlDataReader reader = getActorCmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // ORM - Object Relation Mapping
+                            actorResponse.Actors.Add(
+                                            new Actor()
+                                                {
+                                                    ActorNo = Convert.ToInt32(reader[0]),
+                                                    FullName = reader[1].ToString(),
+                                                    GivenName = reader[2].ToString(),
+                                                    Surname = reader[3].ToString()
+                                                });
+
+                        }
+                        reader.Close();
+                    }
+
+                    connecting.Close();
+                    
+                }
+                catch (SqlException ex)
+                {
+                    throw new ApplicationException($"Some sql error happened + {ex}");
+                }
+
+            }
+
+            return actorResponse.Actors[0];
+
+        }
     }
 }
