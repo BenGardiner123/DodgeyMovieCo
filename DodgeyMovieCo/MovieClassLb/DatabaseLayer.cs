@@ -185,13 +185,13 @@ namespace DodgeyMovieCo.MovieClassLb
             }
 
             //using LINQ to filter all the strings out of the list -which wil be only the titles
-            var result = movieResposne.Movies.OfType<string>();
+            var result = movieResposne.Movies;
 
 
             // Loop through the collection and add all those titles to a list and then return them
-            foreach (var title in result)
+            foreach (var movie in result)
             {
-                titles.Add(title);
+                titles.Add(movie.Title);
             }
 
             return titles;
