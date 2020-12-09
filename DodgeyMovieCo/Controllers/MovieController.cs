@@ -66,7 +66,6 @@ namespace DodgeyMovieCo.Controllers
         {
             var output = _DatabaseLayer.GetAllMovies();
             return output;
-
         }
         
        // GET api/<MovieController>/The
@@ -74,11 +73,8 @@ namespace DodgeyMovieCo.Controllers
         [HttpGet]
         public List<string> TitlesThatBeginWith()
         {
-
             var output = _DatabaseLayer.TitlesThatBeginWith();
-
             return output;
-      
         }
     
 
@@ -87,11 +83,8 @@ namespace DodgeyMovieCo.Controllers
         [HttpGet]
         public List<string> getLukeWilsonsMovieTitles() 
         {
-
             var output = _DatabaseLayer.getLukeWilsonsMovieTitles();
-
             return output;
-
         }
 
 
@@ -106,7 +99,7 @@ namespace DodgeyMovieCo.Controllers
         }
   
 
- /*       //update task 1
+        //update task 1
         // PUT api/<MovieController>/ChangeRuntime
         [Route("ChangeRuntime")]
         [HttpPut]
@@ -161,7 +154,7 @@ namespace DodgeyMovieCo.Controllers
 
             return Ok(movie1.Movies);
         }
-        */
+        
         
     /*    // PUT api/<MovieController>/DeppJohnny
         [Route("ChangeActorName")]
