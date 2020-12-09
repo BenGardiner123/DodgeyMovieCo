@@ -10,7 +10,7 @@ namespace DodgeyMovieCo.MovieClassLb
     public class DatabaseLayer
     {
 
-        //DBNull cononection stuff goes here
+        
         IConfiguration configuration;
         // have to add this using nuget sqldataclient
         SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
@@ -20,8 +20,8 @@ namespace DodgeyMovieCo.MovieClassLb
 
         public DatabaseLayer(IConfiguration iConfig)
         {
+            
             this.configuration = iConfig;
-
             this.stringBuilder.DataSource = this.configuration.GetSection("DBConnectionStrings").GetSection("Url").Value;
             this.stringBuilder.InitialCatalog = this.configuration.GetSection("DBConnectionStrings").GetSection("Database").Value;
             this.stringBuilder.UserID = this.configuration.GetSection("DBConnectionStrings").GetSection("User").Value;
@@ -47,22 +47,14 @@ namespace DodgeyMovieCo.MovieClassLb
              */
             try
             {
+                var query = "select * from sys.tables";
+
                 using (SqlConnection conn = new SqlConnection(dodgyestringBuilder.ConnectionString))
                 {
-                    var query = "select * from sys.tables";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-
-                        // open connection, execute INSERT, close connection
-                        conn.Open();
-                        //apparently when you .open it should throw the error here
-                        conn.Close();
-
-
-                    }
-
+                    var command = new SqlCommand(query, conn);
+                    conn.Open();
                 }
+                return "conenction failed";
 
             }
             //hopefully we do the same thing below but wuth te right details  - then when this fails the code below will execute
@@ -72,10 +64,12 @@ namespace DodgeyMovieCo.MovieClassLb
 
                 try
                 {
+                    
                     using (SqlConnection conn = new SqlConnection(this.connectionString))
                     { 
                         conn.Open();
-                        return "Connection redirected succesfully" + ex.Message;
+                        conn.Close();
+                        return " There was an inital error with your account however connection redirected succesfully ! - - " + ex.Message;
                     }
                     
                 }
@@ -92,7 +86,7 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
         
-        public List<Movie> GetAllMovies()
+       /* public List<Movie> GetAllMovies()
         {
             
             string query1 = "select * from Movie";
@@ -139,7 +133,7 @@ namespace DodgeyMovieCo.MovieClassLb
 
 
 
-        }
+        }*/
 
     }
 }

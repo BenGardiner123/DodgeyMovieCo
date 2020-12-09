@@ -39,7 +39,7 @@ namespace DodgeyMovieCo.Models
             staticCastingHolder.Add(new Casting(7, 1, 552));
         }*/
 
-        public int getAllCastings(string connectionString)
+      /*  public int getAllCastings(string connectionString)
         {
             CastingResponseModelEnvelope castingResults = new CastingResponseModelEnvelope();
 
@@ -89,7 +89,7 @@ namespace DodgeyMovieCo.Models
 
             return DodgeyMovieCo.Controllers.MovieController.staticCastingHolder.Count;
         }
-
+*/
 
 
 

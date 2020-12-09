@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace DodgeyMovieCo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ExceptionController : ControllerBase
     {
         //will need to instntitate a new class of dblayer here and for every controller -  
-        private DatabaseLayer _databaseLayer;
+        public DatabaseLayer MydatabaseLayer;
+
         public ExceptionController(DatabaseLayer databaseLayer)
         {
-            this._databaseLayer = databaseLayer;
+            this.MydatabaseLayer = databaseLayer;
         }
 
        
@@ -24,11 +25,9 @@ namespace DodgeyMovieCo.Controllers
         public ActionResult<string> attemptDbConnectThenRedirect()
         {
 
-            string result = _databaseLayer.dbRedirect();
+            string result = MydatabaseLayer.dbRedirect();
 
             return Ok(result);
-
-        
 
         }
 
