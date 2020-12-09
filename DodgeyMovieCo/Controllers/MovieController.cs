@@ -96,28 +96,29 @@ namespace DodgeyMovieCo.Controllers
 
 
 
-  /*     // GET api/<MovieController>/RunningTimes
+       // GET api/<MovieController>/RunningTimes
         [Route(("RunningTimes"))]
         [HttpGet]
         public string GetTotalMovieRunTime()
         {
             //Using the list Movies created in step one, 
             //display the total running time of all movies
-            
+
+            var output = _DatabaseLayer.GetAllMovies();
             //create a list of int's to hold each movies runtimes
             List<int> runningTimeOutput = new List<int>();
 
             //for each movie pull out theruntime and stick it inside the other list 
-            foreach (var movie in staticResultsHolder)
+            foreach (var movie in output)
             {
                 runningTimeOutput.Add(movie.RunTime);
             }
             //calc all the int's inside the list
             int sumOfAll = runningTimeOutput.Sum();
 
-            return $"the total runtime all of the moveisa in the list is {sumOfAll} mins";
+            return $"the total runtime all of the movies in the database is {sumOfAll} mins";
         }
-  */
+  
 
  /*       //update task 1
         // PUT api/<MovieController>/ChangeRuntime
