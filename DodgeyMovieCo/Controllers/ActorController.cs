@@ -48,5 +48,18 @@ namespace DodgeyMovieCo.Controllers
             return Ok(selected_result);
         }
 
+
+        // POST api/<MovieController>/NewActor
+        [Route("CreateUserActor")]
+        [HttpPost]
+        public ActionResult<Actor> Post([FromBody] Actor newActor)
+        {
+            Actor actor = newActor;
+            actor.ActorNo = _DatabaseLayer.getNextActorNum();
+            var output = _DatabaseLayer.CreateNewactor(actor);
+            return Ok(output);
+
+        }
+
     }
 }

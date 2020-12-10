@@ -99,36 +99,9 @@ namespace DodgeyMovieCo.Controllers
             }
         }
 
-/*
-       // POST api/<MovieController>/NewActor
-       [Route("CreateUserActor")]
-       [HttpPost]
-       public ActionResult Post([FromBody] Actor newActor)
-       {
-            
 
-            string query1 = "INSERT INTO Actor (ActorNo, FullName, GivenName, Surname) " +
-                           $"VALUES ({newActor.ActorNo}, {newActor.FullName}, {newActor.GivenName}, {newActor.Surname}) ";
-
-            // create connection and command
-            SqlConnection connecting = new SqlConnection(connectionString);
-
-            SqlCommand createNewActor = new SqlCommand(query1, connecting);
-
-            try
-            {
-                connecting.Open();
-                createNewActor.ExecuteNonQuery();
-                connecting.Close();
-            }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException($"Some sql error happened + {ex}");
-            }
-
-            return Ok();
-       }
-    */
+       
+    
        
         
        

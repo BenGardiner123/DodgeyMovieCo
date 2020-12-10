@@ -495,6 +495,38 @@ namespace DodgeyMovieCo.MovieClassLb
             return output;
         }
 
+        public int getNextActorNum()
+        {
+            //need to contact the db and get the next seqeunece of the movieno
+            string query1 = "SELECT MAX(ACTORNO) + 1 FROM ACTOR ";
+
+            SqlConnection connecting = new SqlConnection(connectionString);
+            SqlCommand getNextID = new SqlCommand(query1, connecting);
+
+            int output = 0;
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getNextID.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        output = reader.GetInt32(0);
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex.Message} + {ex.Errors} + {ex.Number}");
+            }
+            return output;
+        }
+
 
         public NewMovieRequestModel CreateNewMovie(int nextValue, NewMovieRequestModel newUserMovie)
         {
@@ -530,7 +562,35 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
 
+        public Actor CreateNewactor(Actor newActor)
+        {
 
+
+            string query1 = "INSERT INTO Actor (ActorNo, FullName, GivenName, Surname) " +
+                           "VALUES (@actorno, @fullname, @givenname, @surname) ";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand createNewActor = new SqlCommand(query1, connecting);
+            createNewActor.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newActor.ActorNo;
+            createNewActor.Parameters.Add("@fullname", SqlDbType.VarChar, 100).Value = newActor.FullName;
+            createNewActor.Parameters.Add("@givenname", SqlDbType.VarChar, 100).Value = newActor.GivenName;
+            createNewActor.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = newActor.Surname;
+
+            try
+            {
+                connecting.Open();
+                createNewActor.ExecuteNonQuery();
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex} + { ex.Message} + { ex.Errors} + { ex.Number}");
+            }
+
+            return newActor;
+        }
 
 
 
