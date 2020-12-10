@@ -438,7 +438,80 @@ namespace DodgeyMovieCo.MovieClassLb
             return "actor updated";
 
 
-
         }
+
+
+        public int getNextMovieNum()
+        {
+            //need to contact the db and get the next seqeunece of the movieno
+            string query1 = "select next value for movieno "
+                    
+
+            SqlConnection connecting = new SqlConnection(connectionString);
+            SqlCommand getNextID = new SqlCommand(query1, connecting);
+
+            int output = 0;
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getNextID.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        output = reader.GetInt32(0);
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+            return output;
+        }
+
+
+        public Movie CreateNewMovie(int nextValue,  Movie newUserMovie)
+        {
+       
+            string query1 = "INSERT INTO MOVIE (MovieNum, Title, ReleaseYear, RunTime) " +
+                           "VALUES (@movienum, @newtitle, @releaseYear, @runTime) ";
+
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand createNewMovie = new SqlCommand(query1, connecting);
+            createNewMovie.Parameters.Add("@movienum", SqlDbType.Int, 100).Value = nextValue;
+            createNewMovie.Parameters.Add("@newtitle", SqlDbType.VarChar, 100).Value = newUserMovie.Title;
+            createNewMovie.Parameters.Add("@releaseYear", SqlDbType.SmallInt).Value = newUserMovie.ReleaseYear;
+            createNewMovie.Parameters.Add("@runTime", SqlDbType.SmallInt).Value = newUserMovie.RunTime;
+
+            try
+            {
+                connecting.Open();
+                createNewMovie.ExecuteNonQuery();
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            var outputMovie = newUserMovie;
+            outputMovie.MovieNum = nextValue;
+
+            return outputMovie;
+        }
+
+
+
+
+
+
     }
 }

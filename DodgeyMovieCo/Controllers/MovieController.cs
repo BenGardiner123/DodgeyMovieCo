@@ -26,37 +26,6 @@ namespace DodgeyMovieCo.Controllers
             this._DatabaseLayer = databaseLayer;
         }
 
-        /* [Route("TotalCasting")]
-         [HttpGet]
-         public ActionResult ActorTotal()
-         {
-             Casting c1 = new Casting();
-             return Ok(c1.getAllCastings(connectionString));
-         }*/
-
-
-        /*  // GET: api/<MovieController>/NumActors
-
-          [Route("NumActors/{movieNum}")]
-          [HttpGet]
-          public List<NumActorsResponseModel> ActorTotal(int movieNum)
-          {
-              Movie m2 = new Movie();
-              return m2.NumActors(connectionString, movieNum);
-          }
-  */
-
-
-        /*      // GET: api/<MovieController>/MovieAge
-              [Route("MovieAge/{movieTitle}")]
-              [HttpGet]
-              public int GetMovieAge(string movieTitle)
-              {
-                  Movie m2 = new Movie();
-                  return m2.GetAge(connectionString, movieTitle);
-
-              }*/
-
 
         //ReadTask1
         // GET: /<MovieController>/AllMovies
@@ -100,7 +69,7 @@ namespace DodgeyMovieCo.Controllers
 
 
         //update task 1
-        // PUT api/<MovieController>/ChangeRuntime
+        // PUT /<MovieController>/ChangeRuntime
         [Route("ChangeRuntime")]
         [HttpPatch]
         public ActionResult<Movie> ChangeMovieRuntime([FromBody] UpdateRuntimeRequestModel userUpdateRequest)
@@ -109,41 +78,17 @@ namespace DodgeyMovieCo.Controllers
             return Ok(output);
         }
 
-          
-        
-        
-  
-
-
-       
-    /*    // POST api/<MovieController>/CreateNewMovie
+         
+         // POST /<MovieController>/CreateNewMovie
         [Route("CreateUserMovie")]
         [HttpPost]
         public ActionResult<Movie> Post([FromBody] Movie newUserMovie)
         {
-            
-            string query1 = "INSERT INTO MOVIE (MovieNum, Title, ReleaseYear, RunTime) " +
-                           $"VALUES ({newUserMovie.MovieNum}, {newUserMovie.Title}, {newUserMovie.ReleaseYear}, {newUserMovie.RunTime}) ";
-
-            // create connection and command
-            SqlConnection connecting = new SqlConnection(connectionString);
-
-            SqlCommand createNewMovie= new SqlCommand(query1, connecting);
-
-            try
-            {
-                connecting.Open();
-                createNewMovie.ExecuteNonQuery();
-                connecting.Close();
-            }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException($"Some sql error happened + {ex}");
-            }
-
-            return Ok();
+            var nextValue = _DatabaseLayer.getNextMovieNum();
+            var result = _DatabaseLayer.CreateNewMovie(nextValue, newUserMovie);
+            return Ok(result);
         }
-*/
+
 
 
 
