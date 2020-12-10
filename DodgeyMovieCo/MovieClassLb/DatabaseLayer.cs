@@ -465,7 +465,7 @@ namespace DodgeyMovieCo.MovieClassLb
         public int getNextMovieNum()
         {
             //need to contact the db and get the next seqeunece of the movieno
-            string query1 = "select next value for movieno ";
+            string query1 = "SELECT MAX(MOVIENO) + 1 FROM MOVIE ";
                     
 
             SqlConnection connecting = new SqlConnection(connectionString);
@@ -490,7 +490,7 @@ namespace DodgeyMovieCo.MovieClassLb
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException($"Some sql error happened + {ex}");
+                throw new ApplicationException($"Some sql error happened + {ex.Message} + {ex.Errors} + {ex.Number}");
             }
             return output;
         }
@@ -499,7 +499,7 @@ namespace DodgeyMovieCo.MovieClassLb
         public NewMovieRequestModel CreateNewMovie(int nextValue, NewMovieRequestModel newUserMovie)
         {
        
-            string query1 = "INSERT INTO MOVIE (MovieNum, Title, ReleaseYear, RunTime) " +
+            string query1 = "INSERT INTO MOVIE (MOVIENO, TITLE, RELYEAR, RUNTIME) " +
                            "VALUES (@movienum, @newtitle, @releaseYear, @runTime) ";
 
 
@@ -520,7 +520,7 @@ namespace DodgeyMovieCo.MovieClassLb
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException($"Some sql error happened + {ex}");
+                throw new ApplicationException($"Some sql error happened + {ex} + { ex.Message} + { ex.Errors} + { ex.Number}");
             }
 
             var outputMovie = newUserMovie;
