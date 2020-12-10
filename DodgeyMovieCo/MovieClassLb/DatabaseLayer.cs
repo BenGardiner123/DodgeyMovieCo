@@ -309,6 +309,7 @@ namespace DodgeyMovieCo.MovieClassLb
             return MovieList[0];
         }
 
+       
 
         public Movie ChangeMovieRuntime(UpdateRuntimeRequestModel userUpdateRequest)
         {
@@ -527,6 +528,39 @@ namespace DodgeyMovieCo.MovieClassLb
             return output;
         }
 
+        public int getNextcastingNum()
+        {
+            //need to contact the db and get the next seqeunece of the movieno
+            string query1 = "SELECT MAX(castid) + 1 FROM casting ";
+
+            SqlConnection connecting = new SqlConnection(connectionString);
+            SqlCommand getNextID = new SqlCommand(query1, connecting);
+
+            int output = 0;
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = getNextID.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        output = reader.GetInt32(0);
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex.Message} + {ex.Errors} + {ex.Number}");
+            }
+            return output;
+        }
+
+
 
         public NewMovieRequestModel CreateNewMovie(int nextValue, NewMovieRequestModel newUserMovie)
         {
@@ -592,6 +626,105 @@ namespace DodgeyMovieCo.MovieClassLb
             return newActor;
         }
 
+
+        public List<string> checkCasting(int ActorNo)
+        {
+
+            //access the database and display the titles for all the movies 
+            //that Luke Wilson starred in
+            MovieDatabaseserverRespnse movieResposne = new MovieDatabaseserverRespnse();
+            //this is wehre the titles will go after they're pulled out o fthe db'
+            List<string> titles = new List<string>();
+
+            string query1 = "SELECT M.MOVIENO, M.TITLE, M.RELYEAR, M.RUNTIME " +
+                               "FROM MOVIE M " +
+                               "INNER JOIN CASTING C " +
+                               "ON C.MOVIENO = M.MOVIENO " +
+                               "INNER JOIN ACTOR A " +
+                               "ON C.ACTORNO = A.ACTORNO " +
+                               "WHERE c.actorno = @actorno ";
+
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand checkCasting = new SqlCommand(query1, connecting);
+            checkCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = ActorNo;
+
+            try
+            {
+                connecting.Open();
+
+                using (SqlDataReader reader = checkCasting.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // ORM - Object Relation Mapping
+                        movieResposne.Movies.Add(
+                            // major problem here was that float in SQL and float in c# are different - so was throwing a casting error - winratio had to be cast as a "single"
+                            new Movie()
+                            {
+                                MovieNum = Convert.ToInt32(reader[0]),
+                                Title = reader[1].ToString(),
+                                ReleaseYear = Convert.ToInt16(reader[2]),
+                                RunTime = Convert.ToInt16(reader[3])
+                            });
+
+                    }
+
+                    reader.Close();
+                }
+
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex}");
+            }
+
+            //using LINQ to filter all the strings out of the list -which wil be only the titles
+            var result = movieResposne.Movies;
+
+
+            // Loop through the collection and add all those titles to a list and then return them
+            foreach (var movie in result)
+            {
+                titles.Add(movie.Title);
+            }
+
+            return titles;
+
+
+
+        }
+
+        public Casting CastActorIntoMovie([FromBody] Casting newCasting)
+        {
+
+
+            string query1 = "INSERT INTO CASTING (CastID, ActorNo, MoveieNo) " +
+                           "VALUES (@castingid, @actorno, @movieno) ";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+
+            SqlCommand createNewCasting = new SqlCommand(query1, connecting);
+            createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.CastID;
+            createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.ActorNo;
+            createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.MoveieNo;
+            try
+            {
+                connecting.Open();
+                createNewCasting.ExecuteNonQuery();
+                connecting.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ApplicationException($"Some sql error happened + {ex} + { ex.Message} + { ex.Errors} + { ex.Number}");
+            }
+
+            return newCasting;
+        }
 
 
     }

@@ -61,5 +61,26 @@ namespace DodgeyMovieCo.Controllers
 
         }
 
+        // POST api/<MovieController>/CastActorIntoNewMovie
+        [HttpPost]
+        public ActionResult<Movie> Post([FromBody] Casting newCasting)
+        {
+            var selected_result = new List<string>();
+            var result = _DatabaseLayer.CastActorIntoMovie(newCasting);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                selected_result = _DatabaseLayer.checkCasting(result.ActorNo);
+            }
+
+
+            return Ok(selected_result);
+
+
+        }
+
     }
 }
