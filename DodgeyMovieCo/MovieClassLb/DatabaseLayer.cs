@@ -288,6 +288,27 @@ namespace DodgeyMovieCo.MovieClassLb
             return $"the total runtime all of the movies in the database is {sumOfAll} mins";
         }
 
+        public string getAMovie(string titleToSearch)
+        {
+            //Using the list Movies created in step one, 
+            //display the total running time of all movies
+
+            var output = GetAllMovies();
+            //create a list of int's to hold each movies runtimes
+            List<string> MovieList = new List<string>();
+
+            //for each movie pull out theruntime and stick it inside the other list 
+            foreach (var movie in output)
+            {
+                if (movie.Title == titleToSearch)
+                {
+                    MovieList.Add(movie.Title);
+                }
+            }
+                
+            return MovieList[0];
+        }
+
 
         public Movie ChangeMovieRuntime(UpdateRuntimeRequestModel userUpdateRequest)
         {
@@ -444,7 +465,7 @@ namespace DodgeyMovieCo.MovieClassLb
         public int getNextMovieNum()
         {
             //need to contact the db and get the next seqeunece of the movieno
-            string query1 = "select next value for movieno "
+            string query1 = "select next value for movieno ";
                     
 
             SqlConnection connecting = new SqlConnection(connectionString);
@@ -475,7 +496,7 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
 
-        public Movie CreateNewMovie(int nextValue,  Movie newUserMovie)
+        public NewMovieRequestModel CreateNewMovie(int nextValue, NewMovieRequestModel newUserMovie)
         {
        
             string query1 = "INSERT INTO MOVIE (MovieNum, Title, ReleaseYear, RunTime) " +

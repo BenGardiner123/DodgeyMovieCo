@@ -82,11 +82,21 @@ namespace DodgeyMovieCo.Controllers
          // POST /<MovieController>/CreateNewMovie
         [Route("CreateUserMovie")]
         [HttpPost]
-        public ActionResult<Movie> Post([FromBody] Movie newUserMovie)
+        public ActionResult<NewMovieRequestModel> Post([FromBody] NewMovieRequestModel newUserMovie)
         {
             var nextValue = _DatabaseLayer.getNextMovieNum();
             var result = _DatabaseLayer.CreateNewMovie(nextValue, newUserMovie);
-            return Ok(result);
+            
+            var check = _DatabaseLayer.getAMovie(result.Title);
+
+            if(check == result.Title)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
 
