@@ -702,16 +702,16 @@ namespace DodgeyMovieCo.MovieClassLb
         {
 
 
-            string query1 = "INSERT INTO CASTING (CastID, ActorNo, MoveieNo) " +
+            string query1 = "INSERT INTO CASTING (CASTID, ACTORNO, MOVIENO) " +
                            "VALUES (@castingid, @actorno, @movieno) ";
 
             // create connection and command
             SqlConnection connecting = new SqlConnection(connectionString);
 
             SqlCommand createNewCasting = new SqlCommand(query1, connecting);
-            createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.CastID;
+            createNewCasting.Parameters.Add("@castingid", SqlDbType.Int, 100).Value = newCasting.CastID;
             createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.ActorNo;
-            createNewCasting.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = newCasting.MoveieNo;
+            createNewCasting.Parameters.Add("@movieno", SqlDbType.Int, 100).Value = newCasting.MoveieNo;
             try
             {
                 connecting.Open();
