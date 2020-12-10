@@ -27,10 +27,23 @@ namespace DodgeyMovieCo.Controllers
         // PUT api/<MovieController>/DeppJohnny
         [Route("ChangeActorName")]
         [HttpPatch]
-        public ActionResult<Actor> UpdateActorNAme([FromBody] UpdateActorNameRequest updateActorName)
+        public string UpdateActorNAme([FromBody] UpdateActorNameRequest updateActorName)
         {
-            var result = _DatabaseLayer.updateActor(updateActorName);
-            return Ok(result);
+            var selected_result = "";
+            var result = _DatabaseLayer.GetActor(updateActorName);
+            if (result == null)
+            {
+                return "Actor null error";
+            }
+            else
+            {
+                result.Surname = updateActorName.NewSurname;
+                result.setFullName();
+                selected_result = _DatabaseLayer.UpdateActorName(result);
+            }
+           
+
+            return selected_result;
         }
 
     }

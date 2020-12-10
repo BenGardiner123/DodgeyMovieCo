@@ -1,4 +1,5 @@
 ﻿using DodgeyMovieCo.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -346,47 +347,16 @@ namespace DodgeyMovieCo.MovieClassLb
         }
 
 
-        public Actor updateActor(UpdateActorNameRequest updateActorName)
+        public Actor GetActor(UpdateActorNameRequest updateActorName)
         {
-            //Provide a way to change an actor’s surname and fullname, found by givenname and surname. 
-            //New surname to obtained via user input.Change must be reflected in the DB.
             ActorResponseModel actorResponse = new ActorResponseModel();
 
-
-            string setName = "UPDATE ACTOR  " +
-                             "SET SURNAME = @newSurname, " +
-                             "FULLNAME = @givename + ' ' + @newSurname " +
-                             "WHERE GIVENNAME = @givename SURNAME = @surname";
-                            
-
-
+            string getActor = "select * From ACTOR  " +
+                              "WHERE GIVENNAME = @givename and SURNAME = @surname";
 
             // create connection and command
             SqlConnection connecting = new SqlConnection(connectionString);
-            using (SqlCommand setActorNameUsingSurnameAndFullname = new SqlCommand(setName, connecting)) 
-            {
-                setActorNameUsingSurnameAndFullname.Parameters.Add("@newSurname", SqlDbType.VarChar, 100).Value = updateActorName.NewSurname;
-                setActorNameUsingSurnameAndFullname.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = updateActorName.GivenName;
-                setActorNameUsingSurnameAndFullname.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = updateActorName.Surname;
-                try
-                {
-                    connecting.Open();
-                    setActorNameUsingSurnameAndFullname.ExecuteNonQuery();
-                    connecting.Close();
-                }
-                catch (SqlException ex)
-                {
-                    throw new ApplicationException($"Some sql error happened + {ex}");
-                }
-
-            }
-
-            string getActor = "select ACTOR  " +
-                              "WHERE GIVENNAME = @givename and SURNAME = @newSurname";
-
-            // create connection and command
-            SqlConnection connecting1 = new SqlConnection(connectionString);
-            using (SqlCommand getActorCmd = new SqlCommand(getActor, connecting1))
+            using (SqlCommand getActorCmd = new SqlCommand(getActor, connecting))
             {
                 getActorCmd.Parameters.Add("@newSurname", SqlDbType.VarChar, 100).Value = updateActorName.NewSurname;
                 getActorCmd.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = updateActorName.GivenName;
@@ -424,7 +394,50 @@ namespace DodgeyMovieCo.MovieClassLb
 
             }
 
+
+
             return actorResponse.Actors[0];
+
+        }
+
+
+
+       public string UpdateActorName(Actor selectedActor)
+        {
+            //Provide a way to change an actor’s surname and fullname, found by givenname and surname. 
+            //New surname to obtained via user input.Change must be reflected in the DB.
+            
+            string setName = "UPDATE ACTOR  " +
+                             "SET FULLNAME = @fullname, " +
+                             "GIVENAME = @givename, " +
+                             "SURNAME = @surname, " + 
+                             "WHERE ACTORNO = @actorno";
+
+            // create connection and command
+            SqlConnection connecting = new SqlConnection(connectionString);
+            using (SqlCommand setActorNameUsingSurnameAndFullname = new SqlCommand(setName, connecting))
+            {
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@fullname", SqlDbType.VarChar, 100).Value = selectedActor.FullName;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@actorno", SqlDbType.VarChar, 100).Value = selectedActor.ActorNo;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = selectedActor.GivenName;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = selectedActor.Surname;
+                try
+                {
+                    connecting.Open();
+                    setActorNameUsingSurnameAndFullname.ExecuteNonQuery();
+                    connecting.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw new ApplicationException($"Some sql error happened + {ex.Message} + ' ' +  {ex.Data} + ' ' + {ex.HelpLink}");
+                }
+
+            }
+
+
+            return "actor updated";
+
+
 
         }
     }
