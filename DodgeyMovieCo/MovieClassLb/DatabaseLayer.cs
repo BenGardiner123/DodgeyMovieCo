@@ -409,8 +409,8 @@ namespace DodgeyMovieCo.MovieClassLb
             
             string setName = "UPDATE ACTOR  " +
                              "SET FULLNAME = @fullname, " +
-                             "GIVENAME = @givename, " +
-                             "SURNAME = @surname, " + 
+                             "GIVENNAME = @givename, " +
+                             "SURNAME = @surname " + 
                              "WHERE ACTORNO = @actorno";
 
             // create connection and command
@@ -418,7 +418,7 @@ namespace DodgeyMovieCo.MovieClassLb
             using (SqlCommand setActorNameUsingSurnameAndFullname = new SqlCommand(setName, connecting))
             {
                 setActorNameUsingSurnameAndFullname.Parameters.Add("@fullname", SqlDbType.VarChar, 100).Value = selectedActor.FullName;
-                setActorNameUsingSurnameAndFullname.Parameters.Add("@actorno", SqlDbType.VarChar, 100).Value = selectedActor.ActorNo;
+                setActorNameUsingSurnameAndFullname.Parameters.Add("@actorno", SqlDbType.Int, 100).Value = selectedActor.ActorNo;
                 setActorNameUsingSurnameAndFullname.Parameters.Add("@givename", SqlDbType.VarChar, 100).Value = selectedActor.GivenName;
                 setActorNameUsingSurnameAndFullname.Parameters.Add("@surname", SqlDbType.VarChar, 100).Value = selectedActor.Surname;
                 try
@@ -429,7 +429,7 @@ namespace DodgeyMovieCo.MovieClassLb
                 }
                 catch (SqlException ex)
                 {
-                    throw new ApplicationException($"Some sql error happened + {ex.Message} + ' ' +  {ex.Data} + ' ' + {ex.HelpLink}");
+                    throw new ApplicationException($"Some sql error happened + {ex.Message} + ' ' +  {ex.ErrorCode} + ' ' + {ex.Number}");
                 }
 
             }
