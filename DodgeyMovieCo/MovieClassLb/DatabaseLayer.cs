@@ -179,7 +179,12 @@ namespace DodgeyMovieCo.MovieClassLb
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException($"Some sql error happened + {ex}");
+                //ToString fullfill the contract you have to return the same type - this will stop the entire show crashing like a bitch
+                List<string> message = new List<string>();
+                message.Add(ex.Message);
+                message.Add("You done fucked up mate!");
+                return message;
+                
             }
 
             //using LINQ to filter all the strings out of the list -which wil be only the titles
